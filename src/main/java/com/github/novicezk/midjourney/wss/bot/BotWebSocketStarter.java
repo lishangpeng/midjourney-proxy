@@ -3,6 +3,7 @@ package com.github.novicezk.midjourney.wss.bot;
 import com.github.novicezk.midjourney.ProxyProperties;
 import com.github.novicezk.midjourney.support.DiscordHelper;
 import com.github.novicezk.midjourney.wss.WebSocketStarter;
+import com.neovisionaries.ws.client.ProxySettings;
 import com.neovisionaries.ws.client.WebSocketFactory;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.requests.RestConfig;
@@ -28,7 +29,13 @@ public class BotWebSocketStarter implements WebSocketStarter {
 		DefaultShardManagerBuilder builder = DefaultShardManagerBuilder.createDefault(
 				this.properties.getDiscord().getBotToken(), GatewayIntent.GUILD_MESSAGES, GatewayIntent.MESSAGE_CONTENT);
 		builder.addEventListeners(this.botMessageListener);
-		WebSocketFactory webSocketFactory = createWebSocketFactory(this.properties);
+//		WebSocketFactory webSocketFactory = createWebSocketFactory(this.properties);
+
+		WebSocketFactory webSocketFactory = new WebSocketFactory();
+		ProxySettings proxySettings = webSocketFactory.getProxySettings();
+		proxySettings.setHost("127.0.0.1");//这里是你的代理
+		proxySettings.setPort(7890);//这里是你的代理
+
 		builder.setWebsocketFactory(webSocketFactory);
 		builder.setSessionController(new CustomSessionController(this.discordHelper.getWss()));
 		builder.setRestConfigProvider(value -> new RestConfig().setBaseUrl(this.discordHelper.getServer() + "/api/v10/"));
