@@ -1,6 +1,7 @@
 package com.github.novicezk.midjourney.service.translate;
 
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.text.CharSequenceUtil;
 import com.github.novicezk.midjourney.ProxyProperties;
 import com.github.novicezk.midjourney.service.TranslateService;
@@ -37,7 +38,7 @@ public class GPTTranslateServiceImpl implements TranslateService {
 				.model(this.openaiConfig.getModel())
 				.temperature(this.openaiConfig.getTemperature())
 				.maxTokens(this.openaiConfig.getMaxTokens())
-				.messages(List.of(m1, m2))
+				.messages(CollUtil.newArrayList(m1, m2))
 				.build();
 		try {
 			List<ChatCompletionChoice> choices = this.openAiService.createChatCompletion(request).getChoices();

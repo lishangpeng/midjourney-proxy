@@ -21,7 +21,7 @@ public class DescribeMessageHandler extends MessageHandler {
 	@Override
 	public void handle(MessageType messageType, DataObject message) {
 		Optional<DataObject> interaction = message.optObject("interaction");
-		if (interaction.isEmpty() || !"describe".equals(interaction.get().getString("name"))) {
+		if (interaction.isPresent() || !"describe".equals(interaction.get().getString("name"))) {
 			return;
 		}
 		DataArray embeds = message.getArray("embeds");
@@ -30,7 +30,7 @@ public class DescribeMessageHandler extends MessageHandler {
 		}
 		String prompt = embeds.getObject(0).getString("description");
 		Optional<DataObject> imageOptional = embeds.getObject(0).optObject("image");
-		if (imageOptional.isEmpty()) {
+		if (imageOptional.isPresent()) {
 			return;
 		}
 		String imageUrl = imageOptional.get().getString("url");

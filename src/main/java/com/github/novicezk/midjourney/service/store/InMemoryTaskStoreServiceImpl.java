@@ -10,6 +10,7 @@ import com.github.novicezk.midjourney.support.TaskCondition;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class InMemoryTaskStoreServiceImpl implements TaskStoreService {
@@ -41,7 +42,7 @@ public class InMemoryTaskStoreServiceImpl implements TaskStoreService {
 
 	@Override
 	public List<Task> list(TaskCondition condition) {
-		return StreamUtil.of(this.taskMap.iterator()).filter(condition).toList();
+		return StreamUtil.of(this.taskMap.iterator()).filter(condition).collect(Collectors.toList());
 	}
 
 	@Override

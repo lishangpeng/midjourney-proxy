@@ -54,12 +54,12 @@ public class RedisTaskStoreServiceImpl implements TaskStoreService {
 		ValueOperations<String, Task> operations = this.redisTemplate.opsForValue();
 		return keys.stream().map(operations::get)
 				.filter(Objects::nonNull)
-				.toList();
+				.collect(Collectors.toList());
 	}
 
 	@Override
 	public List<Task> list(TaskCondition condition) {
-		return list().stream().filter(condition).toList();
+		return list().stream().filter(condition).collect(Collectors.toList());
 	}
 
 	@Override

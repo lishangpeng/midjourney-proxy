@@ -28,21 +28,33 @@ public class BeanConfig {
 
 	@Bean
 	TranslateService translateService(ProxyProperties properties) {
-		return switch (properties.getTranslateWay()) {
-			case BAIDU -> new BaiduTranslateServiceImpl(properties.getBaiduTranslate());
-			case GPT -> new GPTTranslateServiceImpl(properties.getOpenai());
-			default -> prompt -> prompt;
-		};
+		switch (properties.getTranslateWay()){
+			case BAIDU:
+				return new BaiduTranslateServiceImpl(properties.getBaiduTranslate());
+			case GPT:
+				return  new GPTTranslateServiceImpl(properties.getOpenai());
+			default:
+				return prompt -> prompt;
+		}
+//		return switch (properties.getTranslateWay()) {
+//			case BAIDU -> new BaiduTranslateServiceImpl(properties.getBaiduTranslate());
+//			case GPT -> new GPTTranslateServiceImpl(properties.getOpenai());
+//			default -> prompt -> prompt;
+//		};
 	}
 
 	@Bean
 	TaskStoreService taskStoreService(ProxyProperties proxyProperties, RedisConnectionFactory redisConnectionFactory) {
 		ProxyProperties.TaskStore.Type type = proxyProperties.getTaskStore().getType();
 		Duration timeout = proxyProperties.getTaskStore().getTimeout();
-		return switch (type) {
-			case IN_MEMORY -> new InMemoryTaskStoreServiceImpl(timeout);
-			case REDIS -> new RedisTaskStoreServiceImpl(timeout, taskRedisTemplate(redisConnectionFactory));
-		};
+		switch (type){
+			case IN_MEMORY:
+				return new InMemoryTaskStoreServiceImpl(timeout);
+			case REDIS:
+				return new RedisTaskStoreServiceImpl(timeout, taskRedisTemplate(redisConnectionFactory));
+			default:
+				return  null;
+		}
 	}
 
 	@Bean

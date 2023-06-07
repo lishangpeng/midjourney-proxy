@@ -3,26 +3,36 @@ package com.github.novicezk.midjourney.util;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.text.CharSequenceUtil;
 import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @UtilityClass
 public class MimeTypeUtils {
 	private final Map<String, List<String>> MIME_TYPE_MAP;
 
 	static {
 		MIME_TYPE_MAP = new HashMap<>();
-		var resource = MimeTypeUtils.class.getResource("/mime.types");
-		var lines = FileUtil.readLines(resource, StandardCharsets.UTF_8);
-		for (var line : lines) {
-			if (CharSequenceUtil.isBlank(line)) {
-				continue;
+		URL resource = MimeTypeUtils.class.getResource("/mime.types");
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(resource.openStream(), StandardCharsets.UTF_8))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				if (CharSequenceUtil.isBlank(line)) {
+					continue;
+				}
+				String[] arr = line.split(":");
+				MIME_TYPE_MAP.put(arr[0], CharSequenceUtil.split(arr[1], ' '));
 			}
-			var arr = line.split(":");
-			MIME_TYPE_MAP.put(arr[0], CharSequenceUtil.split(arr[1], ' '));
+		} catch (IOException e) {
+			log.error("MimeTypeUtils初始化失败",e);
 		}
 	}
 
@@ -35,7 +45,7 @@ public class MimeTypeUtils {
 			key = MIME_TYPE_MAP.keySet().stream().filter(k -> CharSequenceUtil.startWithIgnoreCase(mimeType, k))
 					.findFirst().orElse(null);
 		}
-		var suffixList = MIME_TYPE_MAP.get(key);
+		List<String> suffixList = MIME_TYPE_MAP.get(key);
 		if (suffixList == null || suffixList.isEmpty()) {
 			return null;
 		}

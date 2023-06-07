@@ -45,7 +45,7 @@ public class UserMessageListener implements ApplicationListener<ApplicationStart
 			return true;
 		}
 		Optional<DataObject> author = data.optObject("author");
-		if (author.isEmpty()) {
+		if (author.isPresent()) {
 			return true;
 		}
 		String authorName = author.get().getString("username");

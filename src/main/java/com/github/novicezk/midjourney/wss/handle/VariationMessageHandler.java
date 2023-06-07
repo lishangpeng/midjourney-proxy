@@ -1,5 +1,6 @@
 package com.github.novicezk.midjourney.wss.handle;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.text.CharSequenceUtil;
 import com.github.novicezk.midjourney.enums.MessageType;
 import com.github.novicezk.midjourney.enums.TaskAction;
@@ -38,8 +39,8 @@ public class VariationMessageHandler extends MessageHandler {
 				// 开始
 				TaskCondition condition = new TaskCondition()
 						.setRelatedTaskId(start.getTaskId())
-						.setActionSet(Set.of(TaskAction.VARIATION))
-						.setStatusSet(Set.of(TaskStatus.SUBMITTED));
+						.setActionSet(CollUtil.newHashSet(TaskAction.VARIATION))
+						.setStatusSet(CollUtil.newHashSet(TaskStatus.SUBMITTED));
 				Task task = this.taskQueueHelper.findRunningTask(condition)
 						.filter(t -> CharSequenceUtil.endWith(t.getDescription(), "V" + start.getIndex()))
 						.min(Comparator.comparing(Task::getSubmitTime))
@@ -58,8 +59,8 @@ public class VariationMessageHandler extends MessageHandler {
 			}
 			TaskCondition condition = new TaskCondition()
 					.setRelatedTaskId(end.getTaskId())
-					.setActionSet(Set.of(TaskAction.VARIATION))
-					.setStatusSet(Set.of(TaskStatus.IN_PROGRESS));
+					.setActionSet(CollUtil.newHashSet(TaskAction.VARIATION))
+					.setStatusSet(CollUtil.newHashSet(TaskStatus.IN_PROGRESS));
 			Task task = this.taskQueueHelper.findRunningTask(condition)
 					.max(Comparator.comparing(Task::getProgress))
 					.orElse(null);
@@ -75,8 +76,8 @@ public class VariationMessageHandler extends MessageHandler {
 			}
 			TaskCondition condition = new TaskCondition()
 					.setMessageId(message.getString("id"))
-					.setActionSet(Set.of(TaskAction.VARIATION))
-					.setStatusSet(Set.of(TaskStatus.IN_PROGRESS));
+					.setActionSet(CollUtil.newHashSet(TaskAction.VARIATION))
+					.setStatusSet(CollUtil.newHashSet(TaskStatus.IN_PROGRESS));
 			Task task = this.taskQueueHelper.findRunningTask(condition)
 					.findFirst().orElse(null);
 			if (task == null) {
@@ -104,8 +105,8 @@ public class VariationMessageHandler extends MessageHandler {
 			}
 			TaskCondition condition = new TaskCondition()
 					.setRelatedTaskId(parseData.getTaskId())
-					.setActionSet(Set.of(TaskAction.VARIATION))
-					.setStatusSet(Set.of(TaskStatus.SUBMITTED, TaskStatus.IN_PROGRESS));
+					.setActionSet(CollUtil.newHashSet(TaskAction.VARIATION))
+					.setStatusSet(CollUtil.newHashSet(TaskStatus.SUBMITTED, TaskStatus.IN_PROGRESS));
 			Task task = this.taskQueueHelper.findRunningTask(condition)
 					.min(Comparator.comparing(Task::getSubmitTime))
 					.orElse(null);

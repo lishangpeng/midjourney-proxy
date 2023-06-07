@@ -7,13 +7,11 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import java.io.Serial;
 import java.io.Serializable;
 
 @Data
 @ApiModel("任务")
 public class Task implements Serializable {
-	@Serial
 	private static final long serialVersionUID = -674915748204390789L;
 
 	private TaskAction action;

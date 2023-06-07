@@ -1,5 +1,6 @@
 package com.github.novicezk.midjourney.wss.handle;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.text.CharSequenceUtil;
 import com.github.novicezk.midjourney.enums.MessageType;
 import com.github.novicezk.midjourney.enums.TaskAction;
@@ -41,8 +42,8 @@ public class UpscaleMessageHandler extends MessageHandler {
 		if (start != null) {
 			TaskCondition condition = new TaskCondition()
 					.setRelatedTaskId(start.getTaskId())
-					.setActionSet(Set.of(TaskAction.UPSCALE))
-					.setStatusSet(Set.of(TaskStatus.SUBMITTED));
+					.setActionSet(CollUtil.newHashSet(TaskAction.UPSCALE))
+					.setStatusSet(CollUtil.newHashSet(TaskStatus.SUBMITTED));
 			Task task = this.taskQueueHelper.findRunningTask(condition)
 					.filter(t -> CharSequenceUtil.endWith(t.getDescription(), "U" + start.getIndex()))
 					.min(Comparator.comparing(Task::getSubmitTime))
@@ -58,8 +59,8 @@ public class UpscaleMessageHandler extends MessageHandler {
 		if (end != null) {
 			TaskCondition condition = new TaskCondition()
 					.setRelatedTaskId(end.getTaskId())
-					.setActionSet(Set.of(TaskAction.UPSCALE))
-					.setStatusSet(Set.of(TaskStatus.IN_PROGRESS));
+					.setActionSet(CollUtil.newHashSet(TaskAction.UPSCALE))
+					.setStatusSet(CollUtil.newHashSet(TaskStatus.IN_PROGRESS));
 			Task task = this.taskQueueHelper.findRunningTask(condition)
 					.filter(t -> CharSequenceUtil.endWith(t.getDescription(), "U" + end.getIndex()))
 					.min(Comparator.comparing(Task::getSubmitTime))
@@ -75,8 +76,8 @@ public class UpscaleMessageHandler extends MessageHandler {
 		if (end2 != null) {
 			TaskCondition condition = new TaskCondition()
 					.setRelatedTaskId(end2.getTaskId())
-					.setActionSet(Set.of(TaskAction.UPSCALE))
-					.setStatusSet(Set.of(TaskStatus.IN_PROGRESS));
+					.setActionSet(CollUtil.newHashSet(TaskAction.UPSCALE))
+					.setStatusSet(CollUtil.newHashSet(TaskStatus.IN_PROGRESS));
 			Task task = this.taskQueueHelper.findRunningTask(condition)
 					.min(Comparator.comparing(Task::getSubmitTime))
 					.orElse(null);
@@ -98,8 +99,8 @@ public class UpscaleMessageHandler extends MessageHandler {
 		if (parseData != null) {
 			TaskCondition condition = new TaskCondition()
 					.setRelatedTaskId(parseData.getTaskId())
-					.setActionSet(Set.of(TaskAction.UPSCALE))
-					.setStatusSet(Set.of(TaskStatus.SUBMITTED, TaskStatus.IN_PROGRESS));
+					.setActionSet(CollUtil.newHashSet(TaskAction.UPSCALE))
+					.setStatusSet(CollUtil.newHashSet(TaskStatus.SUBMITTED, TaskStatus.IN_PROGRESS));
 			Task task = this.taskQueueHelper.findRunningTask(condition)
 					.filter(t -> CharSequenceUtil.endWith(t.getDescription(), "U" + parseData.getIndex()))
 					.min(Comparator.comparing(Task::getSubmitTime))
@@ -115,8 +116,8 @@ public class UpscaleMessageHandler extends MessageHandler {
 		if (end2 != null) {
 			TaskCondition condition = new TaskCondition()
 					.setRelatedTaskId(end2.getTaskId())
-					.setActionSet(Set.of(TaskAction.UPSCALE))
-					.setStatusSet(Set.of(TaskStatus.SUBMITTED, TaskStatus.IN_PROGRESS));
+					.setActionSet(CollUtil.newHashSet(TaskAction.UPSCALE))
+					.setStatusSet(CollUtil.newHashSet(TaskStatus.SUBMITTED, TaskStatus.IN_PROGRESS));
 			Task task = this.taskQueueHelper.findRunningTask(condition)
 					.min(Comparator.comparing(Task::getSubmitTime))
 					.orElse(null);

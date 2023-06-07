@@ -1,5 +1,6 @@
 package com.github.novicezk.midjourney.support;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.text.CharSequenceUtil;
 import com.github.novicezk.midjourney.ProxyProperties;
 import com.github.novicezk.midjourney.ReturnCode;
@@ -134,7 +135,7 @@ public class TaskQueueHelper {
 			try {
 				future.get(this.timeoutMinutes, TimeUnit.MINUTES);
 			} catch (TimeoutException e) {
-				if (Set.of(TaskStatus.FAILURE, TaskStatus.SUCCESS).contains(task.getStatus())) {
+				if (CollUtil.newHashSet(TaskStatus.FAILURE, TaskStatus.SUCCESS).contains(task.getStatus())) {
 					return;
 				}
 				future.cancel(true);

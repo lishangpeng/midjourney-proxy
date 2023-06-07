@@ -1,6 +1,7 @@
 package com.github.novicezk.midjourney.wss.handle;
 
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.text.CharSequenceUtil;
 import com.github.novicezk.midjourney.enums.MessageType;
 import com.github.novicezk.midjourney.enums.TaskAction;
@@ -52,8 +53,8 @@ public class BlendMessageHandler extends MessageHandler {
 				String taskId = CharSequenceUtil.subBefore(urls.get(0).substring(hashStartIndex + 1), ".", true);
 				TaskCondition condition = new TaskCondition()
 						.setId(taskId)
-						.setActionSet(Set.of(TaskAction.BLEND))
-						.setStatusSet(Set.of(TaskStatus.SUBMITTED));
+						.setActionSet(CollUtil.newHashSet(TaskAction.BLEND))
+						.setStatusSet(CollUtil.newHashSet(TaskStatus.SUBMITTED));
 				Task task = this.taskQueueHelper.findRunningTask(condition).findFirst().orElse(null);
 				if (task == null) {
 					return;
@@ -66,8 +67,8 @@ public class BlendMessageHandler extends MessageHandler {
 			} else {
 				// 完成
 				TaskCondition condition = new TaskCondition()
-						.setActionSet(Set.of(TaskAction.BLEND))
-						.setStatusSet(Set.of(TaskStatus.IN_PROGRESS));
+						.setActionSet(CollUtil.newHashSet(TaskAction.BLEND))
+						.setStatusSet(CollUtil.newHashSet(TaskStatus.IN_PROGRESS));
 				Task task = this.taskQueueHelper.findRunningTask(condition)
 						.max(Comparator.comparing(Task::getProgress))
 						.orElse(null);
@@ -82,8 +83,8 @@ public class BlendMessageHandler extends MessageHandler {
 			// 进度
 			TaskCondition condition = new TaskCondition()
 					.setMessageId(message.getString("id"))
-					.setActionSet(Set.of(TaskAction.BLEND))
-					.setStatusSet(Set.of(TaskStatus.IN_PROGRESS));
+					.setActionSet(CollUtil.newHashSet(TaskAction.BLEND))
+					.setStatusSet(CollUtil.newHashSet(TaskStatus.IN_PROGRESS));
 			Task task = this.taskQueueHelper.findRunningTask(condition).findFirst().orElse(null);
 			if (task == null) {
 				return;
@@ -116,8 +117,8 @@ public class BlendMessageHandler extends MessageHandler {
 				String taskId = CharSequenceUtil.subBefore(urls.get(0).substring(hashStartIndex + 1), ".", true);
 				TaskCondition condition = new TaskCondition()
 						.setId(taskId)
-						.setActionSet(Set.of(TaskAction.BLEND))
-						.setStatusSet(Set.of(TaskStatus.SUBMITTED));
+						.setActionSet(CollUtil.newHashSet(TaskAction.BLEND))
+						.setStatusSet(CollUtil.newHashSet(TaskStatus.SUBMITTED));
 				Task task = this.taskQueueHelper.findRunningTask(condition).findFirst().orElse(null);
 				if (task == null) {
 					return;
@@ -130,8 +131,8 @@ public class BlendMessageHandler extends MessageHandler {
 			} else {
 				// 完成
 				TaskCondition condition = new TaskCondition()
-						.setActionSet(Set.of(TaskAction.BLEND))
-						.setStatusSet(Set.of(TaskStatus.IN_PROGRESS));
+						.setActionSet(CollUtil.newHashSet(TaskAction.BLEND))
+						.setStatusSet(CollUtil.newHashSet(TaskStatus.IN_PROGRESS));
 				Task task = this.taskQueueHelper.findRunningTask(condition)
 						.max(Comparator.comparing(Task::getProgress))
 						.orElse(null);
@@ -146,8 +147,8 @@ public class BlendMessageHandler extends MessageHandler {
 			// 进度
 			TaskCondition condition = new TaskCondition()
 					.setMessageId(message.getId())
-					.setActionSet(Set.of(TaskAction.BLEND))
-					.setStatusSet(Set.of(TaskStatus.IN_PROGRESS));
+					.setActionSet(CollUtil.newHashSet(TaskAction.BLEND))
+					.setStatusSet(CollUtil.newHashSet(TaskStatus.IN_PROGRESS));
 			Task task = this.taskQueueHelper.findRunningTask(condition).findFirst().orElse(null);
 			if (task == null) {
 				return;

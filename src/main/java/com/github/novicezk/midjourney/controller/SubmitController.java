@@ -1,5 +1,6 @@
 package com.github.novicezk.midjourney.controller;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.RandomUtil;
 import com.github.novicezk.midjourney.ProxyProperties;
@@ -108,7 +109,7 @@ public class SubmitController {
 		if (CharSequenceUtil.isBlank(changeDTO.getTaskId())) {
 			return SubmitResultVO.fail(ReturnCode.VALIDATION_ERROR, "taskId不能为空");
 		}
-		if (!Set.of(TaskAction.UPSCALE, TaskAction.VARIATION, TaskAction.REROLL).contains(changeDTO.getAction())) {
+		if (!CollUtil.newHashSet(TaskAction.UPSCALE, TaskAction.VARIATION, TaskAction.REROLL).contains(changeDTO.getAction())) {
 			return SubmitResultVO.fail(ReturnCode.VALIDATION_ERROR, "action参数错误");
 		}
 		String description = "/up " + changeDTO.getTaskId();
@@ -131,7 +132,7 @@ public class SubmitController {
 		if (!TaskStatus.SUCCESS.equals(targetTask.getStatus())) {
 			return SubmitResultVO.fail(ReturnCode.VALIDATION_ERROR, "关联任务状态错误");
 		}
-		if (!Set.of(TaskAction.IMAGINE, TaskAction.VARIATION).contains(targetTask.getAction())) {
+		if (!CollUtil.newHashSet(TaskAction.IMAGINE, TaskAction.VARIATION).contains(targetTask.getAction())) {
 			return SubmitResultVO.fail(ReturnCode.VALIDATION_ERROR, "关联任务不允许执行变化");
 		}
 		Task task = newTask(changeDTO);
