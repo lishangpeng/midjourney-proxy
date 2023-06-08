@@ -36,11 +36,6 @@ public class BeanConfig {
 			default:
 				return prompt -> prompt;
 		}
-//		return switch (properties.getTranslateWay()) {
-//			case BAIDU -> new BaiduTranslateServiceImpl(properties.getBaiduTranslate());
-//			case GPT -> new GPTTranslateServiceImpl(properties.getOpenai());
-//			default -> prompt -> prompt;
-//		};
 	}
 
 	@Bean
